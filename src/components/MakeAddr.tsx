@@ -18,6 +18,7 @@ const MakeAddr = ({ addressDB }: any) => {
 	});
 	const { name, phone, address } = value;
 
+	// input value값을 저장.
 	const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		setValue({
 			...value,
@@ -25,6 +26,7 @@ const MakeAddr = ({ addressDB }: any) => {
 		});
 	};
 
+	// select 선택시 텍스트값을 저장.
 	const onSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
 		const selectIdx = event.target.options.selectedIndex;
 		setSelectValue(event.target.options[selectIdx].text);
