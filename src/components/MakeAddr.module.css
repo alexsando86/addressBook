@@ -63,8 +63,11 @@
 }
 
 /* address list */
-.addressList {
+.userName {
 	margin: 50px 0 0;
+}
+.addressList {
+	margin: 10px 0 0;
 }
 .addressList table {
 	width: 100%;

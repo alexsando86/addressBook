@@ -9,10 +9,16 @@ class AddrDataBase {
 			snapshot.val() && callback(val);
 		});
 	}
+
 	add() {}
+
 	remove() {}
-	update() {
-		console.log(database.ref());
+	
+	update(selectName: string, friendName: string, phone: string, address: string) {
+		const postData = {
+			friendName, phone, address
+		}
+		database.ref(`address/${selectName}/${friendName}`).update(postData);
 	}
 }
 

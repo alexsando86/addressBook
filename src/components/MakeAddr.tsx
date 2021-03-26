@@ -3,22 +3,23 @@ import AddrList from "./AddrList";
 import styles from "./MakeAddr.module.css";
 
 export interface addrValue {
-	name: string;
+	friendName: string;
 	phone: string;
 	address: string;
 }
 
 const MakeAddr = ({ addressDB }: any) => {
-	const [selectValue, setSelectValue] = useState("");
+	const defaultVal = "육상현";
+	const [selectValue, setSelectValue] = useState<string>(defaultVal);
 	const [data, setData] = useState(null);
 	const [value, setValue] = useState<addrValue>({
-		name: "",
+		friendName: "",
 		phone: "",
 		address: "",
 	});
-	const { name, phone, address } = value;
+	const { friendName, phone, address } = value;
 
-	// input value값을 저장.
+	// input value 변경값을 저장.
 	const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		setValue({
 			...value,
@@ -31,6 +32,12 @@ const MakeAddr = ({ addressDB }: any) => {
 		const selectIdx = event.target.options.selectedIndex;
 		setSelectValue(event.target.options[selectIdx].text);
 	};
+
+	// 친구추가 data update
+	const onAdd = (event: React.MouseEvent<HTMLButtonElement>) => {
+		event.preventDefault();
+		addressDB.update(selectValue, friendName, phone, address);
+	}
 
 	// initial data loading
 	useEffect(() => {
@@ -52,7 +59,7 @@ const MakeAddr = ({ addressDB }: any) => {
 					</select>
 				</div>
 				<div className={`${styles.name} ${styles.forms}`}>
-					<input type="text" name="name" value={name} placeholder="이름" onChange={onChange} />
+					<input type="text" name="friendName" value={friendName} placeholder="이름" onChange={onChange} />
 				</div>
 				<div className={`${styles.phone} ${styles.forms}`}>
 					<input type="tel" name="phone" value={phone} placeholder="전화번호" onChange={onChange} />
@@ -60,8 +67,10 @@ const MakeAddr = ({ addressDB }: any) => {
 				<div className={`${styles.addr} ${styles.forms}`}>
 					<input type="text" name="address" value={address} placeholder="주소" onChange={onChange} />
 				</div>
-				<button type="button">추가</button>
+				<button type="button" onClick={onAdd}>추가</button>
 			</div>
+			
+			<h3 className={styles.userName}>{selectValue}님의 주소록</h3>
 			<div className={styles.addressList}>
 				<table>
 					<thead>
@@ -73,9 +82,8 @@ const MakeAddr = ({ addressDB }: any) => {
 					</thead>
 					<tbody>
 						{Object.keys(data! || {}).map((item) => {
-							const { name, phone, address } = data![item];
-							console.log(name, phone, address);
-							return <AddrList key={item} name={name} phone={phone} address={address} />;
+							const { friendName, phone, address } = data![item];
+							return <AddrList key={item} friendName={friendName} phone={phone} address={address} />;
 						})}
 					</tbody>
 				</table>
