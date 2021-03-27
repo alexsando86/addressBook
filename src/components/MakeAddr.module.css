@@ -1,5 +1,6 @@
 .makeAddr {
 	display: flex;
+	background:#fff;
 }
 .makeAddr input {
 	position: relative;
@@ -68,6 +69,7 @@
 }
 .addressList {
 	margin: 10px 0 0;
+	background:#fff;
 }
 .addressList table {
 	width: 100%;

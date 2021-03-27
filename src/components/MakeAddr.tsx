@@ -11,17 +11,17 @@ export interface addrValue {
 const MakeAddr = ({ addressDB }: any) => {
 	const [selectValue, setSelectValue] = useState<string>('');
 	const [data, setData] = useState<any>({});
-	const [value, setValue] = useState<addrValue>({
+	const [inputValue, setInputValue] = useState<addrValue>({
 		friendName: "",
 		phone: "",
 		address: "",
 	});
-	const { friendName, phone, address } = value;
+	const { friendName, phone, address } = inputValue;
 
 	// input value 변경값을 저장.
 	const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-		setValue({
-			...value,
+		setInputValue({
+			...inputValue,
 			[event.target.name]: event.target.value,
 		});
 	};
@@ -68,13 +68,13 @@ const MakeAddr = ({ addressDB }: any) => {
 					</select>
 				</div>
 				<div className={`${styles.name} ${styles.forms}`}>
-					<input type="text" name="friendName" value={friendName} placeholder="이름" onChange={onChange} />
+					<input type="text" name="friendName" value={friendName} autoComplete="off" placeholder="이름" onChange={onChange} />
 				</div>
 				<div className={`${styles.phone} ${styles.forms}`}>
-					<input type="tel" name="phone" value={phone} pattern="[0-9]" placeholder="전화번호" onChange={onChange} />
+					<input type="tel" name="phone" value={phone} pattern="[0-9]" autoComplete="off" placeholder="전화번호" onChange={onChange} />
 				</div>
 				<div className={`${styles.addr} ${styles.forms}`}>
-					<input type="text" name="address" value={address} placeholder="주소" onChange={onChange} />
+					<input type="text" name="address" value={address} autoComplete="off" placeholder="주소" onChange={onChange} />
 				</div>
 				<button type="button" onClick={onAdd}>추가</button>
 			</div>
@@ -92,8 +92,7 @@ const MakeAddr = ({ addressDB }: any) => {
 								</tr>
 							</thead>
 							<tbody>
-								{Object.keys(data! || value).map((item) => {
-									console.log(data)
+								{Object.keys(data!).map((item) => {
 									const { friendName, phone, address } = data![item];
 									return <AddrList key={item} friendName={friendName} phone={phone} address={address} />;
 								})}
