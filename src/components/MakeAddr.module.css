@@ -72,6 +72,9 @@
 .addressList table {
 	width: 100%;
 }
+.addressList tbody tr:hover {
+	background: #ffe08c;
+}
 .addressList th {
 	color: #3d3d3d;
 }

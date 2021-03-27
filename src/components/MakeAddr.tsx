@@ -9,9 +9,8 @@ export interface addrValue {
 }
 
 const MakeAddr = ({ addressDB }: any) => {
-	const defaultVal = "육상현";
-	const [selectValue, setSelectValue] = useState<string>(defaultVal);
-	const [data, setData] = useState(null);
+	const [selectValue, setSelectValue] = useState<string>('');
+	const [data, setData] = useState<any>({});
 	const [value, setValue] = useState<addrValue>({
 		friendName: "",
 		phone: "",
@@ -36,7 +35,16 @@ const MakeAddr = ({ addressDB }: any) => {
 	// 친구추가 data update
 	const onAdd = (event: React.MouseEvent<HTMLButtonElement>) => {
 		event.preventDefault();
-		addressDB.update(selectValue, friendName, phone, address);
+		if(friendName && selectValue){
+			addressDB.update(selectValue, friendName, phone, address);
+			setData({
+				...data,
+				[selectValue]: {
+					...data[selectValue],
+					friendName, phone, address
+				}
+			})
+		}
 	}
 
 	// initial data loading
@@ -44,13 +52,14 @@ const MakeAddr = ({ addressDB }: any) => {
 		addressDB.read(selectValue, (val: any) => {
 			setData(val);
 		});
-	}, [addressDB, selectValue]);
+	}, [addressDB, selectValue,]);
+
 
 	return (
 		<>
 			<div className={styles.makeAddr}>
 				<div className={`${styles.select} ${styles.forms}`}>
-					<select required defaultValue={"DEFAULT"} onChange={onSelectChange}>
+					<select required defaultValue={"DEFAULT"} onChange={onSelectChange} className="selectUser">
 						<option value="DEFAULT" disabled hidden>
 							대상을 선택하세요
 						</option>
@@ -62,32 +71,37 @@ const MakeAddr = ({ addressDB }: any) => {
 					<input type="text" name="friendName" value={friendName} placeholder="이름" onChange={onChange} />
 				</div>
 				<div className={`${styles.phone} ${styles.forms}`}>
-					<input type="tel" name="phone" value={phone} placeholder="전화번호" onChange={onChange} />
+					<input type="tel" name="phone" value={phone} pattern="[0-9]" placeholder="전화번호" onChange={onChange} />
 				</div>
 				<div className={`${styles.addr} ${styles.forms}`}>
 					<input type="text" name="address" value={address} placeholder="주소" onChange={onChange} />
 				</div>
 				<button type="button" onClick={onAdd}>추가</button>
 			</div>
-			
-			<h3 className={styles.userName}>{selectValue}님의 주소록</h3>
-			<div className={styles.addressList}>
-				<table>
-					<thead>
-						<tr>
-							<th>이름</th>
-							<th>전화번호</th>
-							<th>주소</th>
-						</tr>
-					</thead>
-					<tbody>
-						{Object.keys(data! || {}).map((item) => {
-							const { friendName, phone, address } = data![item];
-							return <AddrList key={item} friendName={friendName} phone={phone} address={address} />;
-						})}
-					</tbody>
-				</table>
-			</div>
+			{
+				selectValue &&
+				<>
+					<h3 className={styles.userName}>{selectValue}님의 주소록</h3>
+					<div className={styles.addressList}>
+						<table>
+							<thead>
+								<tr>
+									<th>이름</th>
+									<th>전화번호</th>
+									<th>주소</th>
+								</tr>
+							</thead>
+							<tbody>
+								{Object.keys(data! || value).map((item) => {
+									console.log(data)
+									const { friendName, phone, address } = data![item];
+									return <AddrList key={item} friendName={friendName} phone={phone} address={address} />;
+								})}
+							</tbody>
+						</table>
+					</div>
+				</>
+			}
 		</>
 	);
 };
