@@ -12,7 +12,9 @@ class AddrDataBase {
 
 	add() {}
 
-	remove() {}
+	remove(name: string, targetName?: string) {
+		database.ref(`address/${name}/${targetName}`).remove();
+	}
 	
 	update(selectName: string, friendName: string, phone: string, address: string) {
 		const postData = {

@@ -92,3 +92,10 @@
 	width: 60%;
 	text-align: left;
 }
+.addressList .remove button {
+	cursor:pointer;
+	padding:5px 10px;
+	border-radius: 15px;
+	background:#ff3838;
+	color:#fff;
+}

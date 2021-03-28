@@ -6,6 +6,7 @@ export interface addrValue {
 	friendName: string;
 	phone: string;
 	address: string;
+	onRemove?: any;
 }
 
 const MakeAddr = ({ addressDB }: any) => {
@@ -37,14 +38,29 @@ const MakeAddr = ({ addressDB }: any) => {
 		event.preventDefault();
 		if(friendName && selectValue){
 			addressDB.update(selectValue, friendName, phone, address);
-			setData({
-				...data,
-				[selectValue]: {
-					...data[selectValue],
-					friendName, phone, address
-				}
-			})
+			addressDB.read(selectValue, (val: any) => {
+				setData(val);
+			});
+			// setData({
+			//	...data,
+			//	[selectValue]: {
+			//		...data[selectValue],
+			//		friendName, phone, address
+			//	}
+			// })
 		}
+	}
+
+	// 친구 data 삭제
+	const onRemove = (event: React.SyntheticEvent<EventTarget>) => {
+		if (!(event.target instanceof HTMLButtonElement)) {
+			return;
+		}
+		const targetName = event.target.dataset.friendName;
+		addressDB.remove(selectValue, targetName);
+		addressDB.read(selectValue, (val: any) => {
+			setData(val);
+		});
 	}
 
 	// initial data loading
@@ -52,7 +68,7 @@ const MakeAddr = ({ addressDB }: any) => {
 		addressDB.read(selectValue, (val: any) => {
 			setData(val);
 		});
-	}, [addressDB, selectValue,]);
+	}, [addressDB, selectValue]);
 
 
 	return (
@@ -89,12 +105,13 @@ const MakeAddr = ({ addressDB }: any) => {
 									<th>이름</th>
 									<th>전화번호</th>
 									<th>주소</th>
+									<th>삭제</th>
 								</tr>
 							</thead>
 							<tbody>
 								{Object.keys(data!).map((item) => {
 									const { friendName, phone, address } = data![item];
-									return <AddrList key={item} friendName={friendName} phone={phone} address={address} />;
+									return <AddrList key={item} friendName={friendName} phone={phone} address={address} onRemove={onRemove} />;
 								})}
 							</tbody>
 						</table>
