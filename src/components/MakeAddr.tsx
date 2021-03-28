@@ -7,9 +7,12 @@ export interface addrValue {
 	phone: string;
 	address: string;
 	onRemove?: any;
+	onModify?: any;
 }
 
 const MakeAddr = ({ addressDB }: any) => {
+	const [addButton, setAddButton] = useState<HTMLButtonElement | null>();
+	const [addButtonText, setAddButtonText] = useState<string>('추가');
 	const [selectValue, setSelectValue] = useState<string>('');
 	const [data, setData] = useState<any>({});
 	const [inputValue, setInputValue] = useState<addrValue>({
@@ -45,24 +48,26 @@ const MakeAddr = ({ addressDB }: any) => {
 				friendName: '',
 				phone:'',
 				address:'',
-			})
-			// setData({
-			// 	...data,
-			// 	[selectValue]: {
-			// 		...data[selectValue],
-			// 		friendName, phone, address
-			// 	}
-			// })
+			});
+			
+			addButtonText === '수정' && setAddButtonText('추가');
 		}
 	}
 
+	// 친구수정
+	const onModify = (friendName: string, phone: string, address: string) => {
+		setInputValue({
+			...inputValue,
+			friendName,
+			phone,
+			address,
+		});
+		setAddButtonText('수정');
+	}
+
 	// 친구 data 삭제
-	const onRemove = (event: React.SyntheticEvent<EventTarget>) => {
-		if (!(event.target instanceof HTMLButtonElement)) {
-			return;
-		}
-		const targetName = event.target.dataset.friendName;
-		addressDB.remove(selectValue, targetName);
+	const onRemove = (friendName: string) => {
+		addressDB.remove(selectValue, friendName);
 		addressDB.read(selectValue, (val: any) => {
 			setData(val);
 		});
@@ -97,7 +102,7 @@ const MakeAddr = ({ addressDB }: any) => {
 				<div className={`${styles.addr} ${styles.forms}`}>
 					<input type="text" name="address" value={address} autoComplete="off" placeholder="주소" onChange={onChange} />
 				</div>
-				<button type="button" onClick={onAdd}>추가</button>
+				<button type="button" onClick={onAdd} className={styles.addAddr} ref={ref => setAddButton(ref)}>{addButtonText}</button>
 			</div>
 			{
 				selectValue &&
@@ -116,7 +121,7 @@ const MakeAddr = ({ addressDB }: any) => {
 							<tbody>
 								{Object.keys(data!).map((item) => {
 									const { friendName, phone, address } = data![item];
-									return <AddrList key={item} friendName={friendName} phone={phone} address={address} onRemove={onRemove} />;
+									return <AddrList key={item} friendName={friendName} phone={phone} address={address} onRemove={onRemove} onModify={onModify} />;
 								})}
 							</tbody>
 						</table>
