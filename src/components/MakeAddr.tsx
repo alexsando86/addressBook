@@ -41,12 +41,17 @@ const MakeAddr = ({ addressDB }: any) => {
 			addressDB.read(selectValue, (val: any) => {
 				setData(val);
 			});
+			setInputValue({
+				friendName: '',
+				phone:'',
+				address:'',
+			})
 			// setData({
-			//	...data,
-			//	[selectValue]: {
-			//		...data[selectValue],
-			//		friendName, phone, address
-			//	}
+			// 	...data,
+			// 	[selectValue]: {
+			// 		...data[selectValue],
+			// 		friendName, phone, address
+			// 	}
 			// })
 		}
 	}
