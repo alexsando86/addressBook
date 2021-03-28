@@ -11,7 +11,6 @@ export interface addrValue {
 }
 
 const MakeAddr = ({ addressDB }: any) => {
-	const [addButton, setAddButton] = useState<HTMLButtonElement | null>();
 	const [addButtonText, setAddButtonText] = useState<string>('추가');
 	const [selectValue, setSelectValue] = useState<string>('');
 	const [data, setData] = useState<any>({});
@@ -102,7 +101,7 @@ const MakeAddr = ({ addressDB }: any) => {
 				<div className={`${styles.addr} ${styles.forms}`}>
 					<input type="text" name="address" value={address} autoComplete="off" placeholder="주소" onChange={onChange} />
 				</div>
-				<button type="button" onClick={onAdd} className={styles.addAddr} ref={ref => setAddButton(ref)}>{addButtonText}</button>
+				<button type="button" onClick={onAdd} className={styles.addAddr}>{addButtonText}</button>
 			</div>
 			{
 				selectValue &&
