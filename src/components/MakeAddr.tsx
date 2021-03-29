@@ -89,7 +89,7 @@ const MakeAddr = ({ addressDB }: any) => {
 						<option value="DEFAULT" disabled hidden>
 							대상을 선택하세요
 						</option>
-						<option value="jacob">육상현</option>
+						<option value="jacob">상현이</option>
 						<option value="zzang">짱짱이</option>
 					</select>
 				</div>
