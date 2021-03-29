@@ -1,6 +1,6 @@
 .makeAddr {
 	display: flex;
-	background:#fff;
+	background: #fff;
 }
 .makeAddr input {
 	position: relative;
@@ -69,7 +69,7 @@
 }
 .addressList {
 	margin: 10px 0 0;
-	background:#fff;
+	background: #fff;
 }
 .addressList table {
 	width: 100%;
@@ -93,19 +93,35 @@
 	text-align: left;
 }
 .addressList .remove {
-	cursor:pointer;
-	padding:5px 10px;
+	cursor: pointer;
+	padding: 5px 10px;
 	border-radius: 15px;
-	background:#ff4d4d;
-	color:#fff;
+	background: #ff4d4d;
+	color: #fff;
 }
 .addressList .modify {
-	cursor:pointer;
-	padding:5px 10px;
+	cursor: pointer;
+	padding: 5px 10px;
 	border-radius: 15px;
-	background:#ff9f1a;
-	color:#fff;
+	background: #ff9f1a;
+	color: #fff;
 }
 .addressList .remove:not(:only-child):not(:first-child) {
-	margin-left:5px;
+	margin-left: 5px;
+}
+.friendImage {
+	margin: 100px 0 0;
+	text-align: center;
+}
+.friendImage img {
+	width: 500px;
+	transition: 0.3s;
+	vertical-align: top;
+}
+.friendImageOn {
+	margin: 0;
+}
+.friendImageOn img {
+	width: 200px;
+	transform: scale(0.7) translateY(-10px);
 }

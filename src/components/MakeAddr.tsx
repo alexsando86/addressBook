@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import AddrList from "./AddrList";
 import styles from "./MakeAddr.module.css";
+import friendImage from "../images/friends_illustration_style1.png";
 
 export interface addrValue {
 	friendName: string;
@@ -11,8 +12,8 @@ export interface addrValue {
 }
 
 const MakeAddr = ({ addressDB }: any) => {
-	const [addButtonText, setAddButtonText] = useState<string>('추가');
-	const [selectValue, setSelectValue] = useState<string>('');
+	const [addButtonText, setAddButtonText] = useState<string>("추가");
+	const [selectValue, setSelectValue] = useState<string>("");
 	const [data, setData] = useState<any>({});
 	const [inputValue, setInputValue] = useState<addrValue>({
 		friendName: "",
@@ -38,20 +39,21 @@ const MakeAddr = ({ addressDB }: any) => {
 	// 친구추가 data update
 	const onAdd = (event: React.MouseEvent<HTMLButtonElement>) => {
 		event.preventDefault();
-		if(friendName && selectValue){
-			addressDB.update(selectValue, friendName, phone, address);
+		const phoneReplace = phone.replace(/-/g, "").replace(/(\d{3})(\d{4})(\d{4})/, "$1-$2-$3");
+		if (friendName && selectValue) {
+			addressDB.update(selectValue, friendName, phoneReplace, address);
 			addressDB.read(selectValue, (val: any) => {
 				setData(val);
 			});
 			setInputValue({
-				friendName: '',
-				phone:'',
-				address:'',
+				friendName: "",
+				phone: "",
+				address: "",
 			});
-			
-			addButtonText === '수정' && setAddButtonText('추가');
+
+			addButtonText === "수정" && setAddButtonText("추가");
 		}
-	}
+	};
 
 	// 친구수정
 	const onModify = (friendName: string, phone: string, address: string) => {
@@ -61,8 +63,8 @@ const MakeAddr = ({ addressDB }: any) => {
 			phone,
 			address,
 		});
-		setAddButtonText('수정');
-	}
+		setAddButtonText("수정");
+	};
 
 	// 친구 data 삭제
 	const onRemove = (friendName: string) => {
@@ -70,7 +72,7 @@ const MakeAddr = ({ addressDB }: any) => {
 		addressDB.read(selectValue, (val: any) => {
 			setData(val);
 		});
-	}
+	};
 
 	// initial data loading
 	useEffect(() => {
@@ -78,7 +80,6 @@ const MakeAddr = ({ addressDB }: any) => {
 			setData(val);
 		});
 	}, [addressDB, selectValue]);
-
 
 	return (
 		<>
@@ -96,15 +97,19 @@ const MakeAddr = ({ addressDB }: any) => {
 					<input type="text" name="friendName" value={friendName} autoComplete="off" placeholder="이름" onChange={onChange} />
 				</div>
 				<div className={`${styles.phone} ${styles.forms}`}>
-					<input type="tel" name="phone" value={phone} pattern="[0-9]" autoComplete="off" placeholder="전화번호" onChange={onChange} />
+					<input type="tel" name="phone" value={phone} pattern="[0-9]" maxLength={11} autoComplete="off" placeholder="전화번호 (숫자만 입력)" onChange={onChange} />
 				</div>
 				<div className={`${styles.addr} ${styles.forms}`}>
 					<input type="text" name="address" value={address} autoComplete="off" placeholder="주소" onChange={onChange} />
 				</div>
-				<button type="button" onClick={onAdd} className={styles.addAddr}>{addButtonText}</button>
+				<button type="button" onClick={onAdd} className={styles.addAddr}>
+					{addButtonText}
+				</button>
 			</div>
-			{
-				selectValue &&
+			<div className={`${styles.friendImage} ${selectValue && styles.friendImageOn}`}>
+				<img src={friendImage} alt="" />
+			</div>
+			{selectValue && (
 				<>
 					<h3 className={styles.userName}>{selectValue}님의 주소록</h3>
 					<div className={styles.addressList}>
@@ -126,7 +131,7 @@ const MakeAddr = ({ addressDB }: any) => {
 						</table>
 					</div>
 				</>
-			}
+			)}
 		</>
 	);
 };
